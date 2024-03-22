@@ -1,0 +1,26 @@
+int redLED = 0; 
+int greenLED = 1;
+int blueLED = 2;
+
+void setup(){
+ pinMode(redLED, OUTPUT); 
+ pinMode(greenLED, OUTPUT);
+ pinMode(blueLED, OUTPUT);
+}
+
+void loop(){
+setColor(255,0,0); // red
+delay(1000);
+setColor(0,255,0); // green
+delay(1000);
+setColor(0,0,255); // blue
+delay(1000);
+setColor(170,0,255); // random color
+delay(1000);
+}
+
+void setColor(int redValue,int greenValue,int blueValue){
+ analogWrite(redLED,redValue ); 
+ analogWrite(greenLED,greenValue);
+ analogWrite(blueLED, blueValue); 
+}
