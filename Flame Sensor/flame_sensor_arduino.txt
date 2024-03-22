@@ -1,0 +1,17 @@
+int led = 13;
+int fs = 3; // flame sensor pin
+int value = 0;
+
+void setup() {
+  pinMode(fs, INPUT);
+  pinMode(led, OUTPUT);
+}
+
+// We are just simulating the fire sensor with toggle in the simulation in Proteus
+void loop() {
+  value = digitalRead(fs);
+  if( value != 0)
+    digitalWrite(led, HIGH);
+  else
+    digitalWrite(led, LOW);
+}
