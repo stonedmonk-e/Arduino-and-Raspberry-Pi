@@ -1,0 +1,19 @@
+// refer the image for connections and output
+int sensorPin = 0;
+int outputValue;
+
+void setup(){
+  Serial.begin(9600);
+  Serial.println("Reading Data From the Sensor ...");
+  delay(2000);
+}
+
+void loop(){
+  outputValue= analogRead(sensorPin);
+  outputValue = map(outputValue,0,503,0,100);
+  
+  Serial.print("Moisture Value : ");
+  Serial.print(outputValue);
+  Serial.println("%");
+  delay(1000);
+}
