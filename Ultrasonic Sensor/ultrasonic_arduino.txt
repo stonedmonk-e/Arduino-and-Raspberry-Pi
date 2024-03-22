@@ -1,0 +1,56 @@
+// depending on the distance of the object from the "SONAR1" sensor, the led's glow
+
+const int trigPin = 7;
+const int echoPin = 6;
+const int redLedPin = 3;
+const int greenLedPin = 5;
+const int whiteLedPin = 9;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(redLedPin, OUTPUT);
+  pinMode(greenLedPin, OUTPUT);
+  pinMode(whiteLedPin, OUTPUT);
+}
+
+void setLEDs(int redState, int greenState, int whiteState) {
+  digitalWrite(redLedPin, redState);
+  digitalWrite(greenLedPin, greenState);
+  digitalWrite(whiteLedPin, whiteState);
+}
+
+void loop() {
+  long duration, distance;
+  // Trigger ultrasonic sensor
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  
+  // Measure the echo time to determine the distance
+  duration = pulseIn(echoPin, HIGH);
+  distance = duration * 0.034 / 2;
+  Serial.print("Distance: ");
+  Serial.println(distance);
+  
+  if (distance <= 110) {
+    // All Off
+    setLEDs(LOW, LOW, LOW);
+  }
+  else if (distance <= 221) {
+    // Red On
+    setLEDs(HIGH, LOW, LOW);
+  }
+  else if (distance <= 300) {
+    // Green On
+    setLEDs(LOW, HIGH, LOW);
+  }
+  else {
+    // Yellow On
+    setLEDs(LOW, LOW, HIGH);
+  }
+  delay(100);
+}
