@@ -1,0 +1,55 @@
+# Modules
+from goto import *
+import pio
+
+import RPi.GPIO as GPIO  # Import Raspberry Pi GPIO library
+from time import sleep  # Import the sleep function from the time module
+
+GPIO.setmode(GPIO.BCM)  # Use physical pin numbering
+GPIO.setup(4, GPIO.IN)  # Set pin 8 to be an output pin and set initial value to low (off)
+
+# Peripheral Configuration Code
+
+#---CONFIG_BEGIN---
+import cpu
+import FileStore
+import VFP
+import Ports
+
+def peripheral_setup () :
+# Peripheral Constructors
+ pio.cpu=cpu.CPU ()
+ pio.storage=FileStore.FileStore ()
+ pio.server=VFP.VfpServer ()
+ pio.uart=Ports.UART ()
+ pio.storage.begin ()
+ pio.server.begin (0)
+# Install interrupt handlers
+
+def peripheral_loop () :
+ pio.server.poll ()
+
+#---CONFIG_END---
+# Main function
+def main () :
+# Setup
+ peripheral_setup()
+ pio.uart.setup(9600)
+ 
+# Infinite loop
+ while 1 :
+  #DATA=pio.uart.recv()
+ 
+  if (GPIO.input(4) == 1):
+     pio.uart.println("Flame Detected")
+     sleep(1)
+  else:
+     pio.uart.println("No Flame")
+     sleep(1)
+
+
+  #peripheral_loop()
+  pass
+# Command line execution
+if __name__ == '__main__' :
+   main()
