@@ -1,0 +1,19 @@
+Using the IR sensor library in Protues
+Create hex file in arduino ide and upload it to IR
+
+int IRPin = 3;
+int LED = 13;
+int value;
+void setup(){
+  pinMode(IRPin, INPUT);
+  pinMode(LED, OUTPUT);
+}
+void loop(){
+  value = digitalRead(IRPin);
+  if(value == HIGH) {
+    digitalWrite(LED, HIGH);
+  } 
+  else{
+    digitalWrite(LED, LOW);
+  }
+}
