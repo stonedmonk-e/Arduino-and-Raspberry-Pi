@@ -1,45 +1,93 @@
-int Xread, Xrest;
-int Yread, Yrest;
-int Zread, Zrest;
-double Gx, Gy, Gz;
-int xpin = 0;
-int ypin = 1;
-int zpin = 2;
-int t1;
+#include <LiquidCrystal.h>
 
-void setup(){
-  Serial.begin(9600);
-  digitalWrite(13,HIGH);
-  delay(100);
+// Initialize the LCD with the numbers of the interface pins
+LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
+
+int Xread;  // Variable to store the X-axis reading
+int Xrest;  // Variable to store the X-axis resting value
+
+int Yread;  // Variable to store the Y-axis reading
+int Yrest;  // Variable to store the Y-axis resting value
+
+int Zread;  // Variable to store the Z-axis reading
+int Zrest;  // Variable to store the Z-axis resting value
+
+double Gx;  // Variable to store the X-axis acceleration
+double Gy;  // Variable to store the Y-axis acceleration
+double Gz;  // Variable to store the Z-axis acceleration
+
+int xpin = 0;  // Analog pin for the X-axis
+int ypin = 1;  // Analog pin for the Y-axis
+int zpin = 2;  // Analog pin for the Z-axis
+
+int t1;  // Variable to store the time
+
+void setup() {
+  Serial.begin(9600);  // Initialize serial communication at 9600 bits per second
+  lcd.begin(20, 4);    // Set up the LCD's number of columns and rows
+  lcd.clear();         // Clear the LCD display
+  lcd.setCursor(0, 0); // Set the cursor to column 0, row 0
+  lcd.print("        Acceleration"); // Print a message to the LCD
+  lcd.setCursor(0, 1); // Set the cursor to column 0, row 1
+  lcd.print("         Measurement"); // Print another message to the LCD
+  delay(2000);         // Wait for 2 seconds
+
+  digitalWrite(13, HIGH); // Turn on an LED connected to pin 13
+  delay(100);              // Wait for 100 milliseconds
+
+  // Read the resting values for each axis
   Xrest = analogRead(xpin);
   Serial.print(Xrest);
+
   Yrest = analogRead(ypin);
   Serial.print(Yrest);
+
   Zrest = analogRead(zpin);
   Serial.print(Zrest);
-  digitalWrite(13,LOW);
+  digitalWrite(13, LOW); // Turn off the LED connected to pin 13
 }
-void loop(){
-  Serial.print("Time ");
-  t1 = millis();
-  Serial.println(t1*0.001);
 
+void loop() {
+  Serial.print("Time ");
+  t1 = millis(); // Get the current time in milliseconds since the program started
+  Serial.println(t1 * 0.001); // Print the time in seconds
+
+  // Read the current values and subtract the resting values
   Xread = analogRead(xpin) - Xrest;
   Yread = analogRead(ypin) - Yrest;
   Zread = analogRead(zpin) - Zrest;
 
-  Gx = Xread/67.584;
-  Gy = Yread/67.584;
-  Gz = Zread/67.584;
+  // Convert the readings to acceleration values in g
+  Gx = Xread / 67.584;
+  Gy = Yread / 67.584;
+  Gz = Zread / 67.584;
 
+  // Print the acceleration values to the Serial Monitor
   Serial.print("Acceleration X :");
   Serial.print(Gx);
-
-  Serial.print("Acceleration Y :");
+  Serial.print(" Acceleration Y :");
   Serial.print(Gy);
-
-  Serial.print("Acceleration Z :");
+  Serial.print(" Acceleration Z :");
   Serial.print(Gz);
   Serial.print("\n");
-  delay(1000);
+
+  // Display the acceleration values on the LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Acceleration....    ");
+
+  lcd.setCursor(6, 1);
+  lcd.print("gx:");
+  lcd.print(Gx);
+
+  lcd.setCursor(6, 2);
+  lcd.print("gy:");
+  lcd.print(Gy);
+
+  lcd.setCursor(6, 3);
+  lcd.print("gz:");
+  lcd.print(Gz);
+  
+  delay(1000); // Wait for 1 second before repeating the loop
+  lcd.clear();
 }
