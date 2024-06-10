@@ -17,3 +17,12 @@ void loop(){
   Serial.println("%");
   delay(1000);
 }
+
+/*
+The map() function takes five arguments:
+  The value to be mapped (outputValue in this case).
+  The minimum value of the input range (0 in this case).
+  The maximum value of the input range (503 in this case).
+  The minimum value of the output range (0 in this case).
+  The maximum value of the output range (100 in this case).
+*/
